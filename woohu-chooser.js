@@ -141,6 +141,8 @@
   };
 
   var Chooser = function(template) {
+    template = template.replace(/&lt;/g, '<');
+    template = template.replace(/&gt;/g, '>');
     this.settings = {
       steps: [
         {
@@ -173,21 +175,14 @@
       template: '<div id="woohu-chooser"></div>',
       render: function() {
         var view = this,
-            host, shadowRoot, compiledTemplate;
-
-        $('body').append(view.template);
+            $el, compiledTemplate;
          
-        // Add shadow DOM
-        host = document.querySelector('#woohu-chooser');
-        shadowRoot = host.createShadowRoot();
-
         compiledTemplate = _.template(template)({step: model.step});
 
-        shadowRoot.innerHTML = compiledTemplate;
+        $el = $(view.template).html(compiledTemplate);
+        $('body').append($el);
 
-        this.element = host;
-
-        return host;
+        return $el;
       },
       update: function() {
 

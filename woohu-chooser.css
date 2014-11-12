@@ -36,6 +36,7 @@
   color: white;
 }
 
+/* --- woohu chooser styles --- */
 #woohu-chooser {
   position: fixed;
   z-index: 1000;
@@ -45,4 +46,70 @@
   transform: translateX(-50%);
   -webkit-transform: translateX(-50%);
   width: 400px;
+  box-sizing: content-box;
+}
+
+#woohu-chooser .woohu-section {
+  background-color: #2ecc71;
+  padding: 20px 10px;
+  box-shadow: 0 0 5px 1px rgba(50, 50, 50, 0.3);
+}
+
+#woohu-chooser .woohu-section:after, .woohu-section:before {
+  clear:both;
+  content: '';
+  display: table;
+}
+
+#woohu-chooser .woohu-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  box-sizing: content-box;
+}
+
+#woohu-chooser .woohu-progress::-webkit-progress-bar {
+  background-color: #ebedef;
+}
+
+#woohu-chooser .woohu-progress::-webkit-progress-value {
+  background-color: #27AE60;
+}
+
+#woohu-chooser .woohu-btn {
+  cursor: pointer;
+  transition: opacity 0.4s ease;
+  -webkit-transition: opacity 0.4s ease;
+}
+
+#woohu-chooser .woohu-btn:hover {
+  opacity: 0.85;
+}
+
+#woohu-chooser .woohu-toolbar, #woohu-chooser .content {
+  float: left;
+  text-align: center;
+}
+
+ #woohu-chooser .woohu-toolbar {
+  width: 10%;
+}
+
+#woohu-chooser .woohu-toolbar .woohu-icon-back {
+  background-color: #eee;
+  opacity: 0.5;
+  display: inline-block;
+  width: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+#woohu-chooser .woohu-content {
+  color: white;
+  font-weight: normal;
+  width: 80%;
 }
