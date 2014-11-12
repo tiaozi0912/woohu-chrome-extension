@@ -1,0 +1,21 @@
+{
+  "name": "woohu-chrome-extension",
+  "version": "0.0.0",
+  "homepage": "https://github.com/tiaozi0912/woohu-chrome-extension",
+  "authors": [
+    "Yujun Wu <wyj0912@gmail.com>"
+  ],
+  "description": "Get the watch item on the web page for Woohu",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.0",
+    "zepto": "~1.1.4",
+    "underscore": "~1.7.0"
+  }
+}
