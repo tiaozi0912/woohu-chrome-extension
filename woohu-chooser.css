@@ -36,6 +36,10 @@
   color: white;
 }
 
+.woohu-selected {
+  border: 1px solid green !important;
+}
+
 /* --- woohu chooser styles --- */
 #woohu-chooser {
   position: fixed;
@@ -90,7 +94,7 @@
   opacity: 0.85;
 }
 
-#woohu-chooser .woohu-toolbar, #woohu-chooser .content {
+#woohu-chooser .woohu-toolbar, #woohu-chooser .woohu-content {
   float: left;
   text-align: center;
 }
@@ -99,13 +103,20 @@
   width: 10%;
 }
 
-#woohu-chooser .woohu-toolbar .woohu-icon-back {
+#woohu-chooser .woohu-toolbar .woohu-btn-arrow {
   background-color: #eee;
   opacity: 0.5;
   display: inline-block;
   width: 24px;
   border-radius: 12px;
   text-align: center;
+  line-height: 24px;
+  font-size: 11px;
+}
+
+#woohu-chooser .woohu-toolbar .woohu-btn-arrow span {
+  position: relative;
+  bottom: 1px;
 }
 
 #woohu-chooser .woohu-content {

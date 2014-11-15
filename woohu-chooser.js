@@ -91,18 +91,18 @@
       update: function() {
         //_this.element.remove();
         $('.woohu-inspector').remove();
-        return this.render();
+        if (model.highlightedElement) {
+          return this.render();
+        }
       },
       events: {
         // Dismiss the selection and re-select
         'click .woohu-btn-reselect': function(e) {
-          model.selectedElement = model.highlightedElement = null;
-          view.update();
+          _this.unselectElement();
         },
         // Select an element
         'click .woohu-highlight': function(e) {
-          model.selectedElement = model.highlightedElement;
-          view.update();
+          _this.selectElement(model.highlightedElement);
           if (options.onSelectElement) {
             options.onSelectElement(model.selectedElement);
           }
@@ -148,9 +148,25 @@
     return this.element;
   };
 
-  Inspector.prototype.setSelectedElement = function(element) {
-    this.model.selectedElement = this.model.highlightedElement = element;
+  Inspector.prototype.selectElement = function(element) {
+    var model = this.model;
+    model.selectedElement = model.highlightedElement = element;
+    if (this.options.selectedCls) {
+      $(element).addClass(this.options.selectedCls);
+    }
     this.view.update();
+  };
+
+  Inspector.prototype.unselectElement = function() {
+    var model = this.model;
+    $(model.selectedElement).removeClass(this.options.selectedCls);
+
+    model.selectedElement = model.highlightedElement = null;
+    this.view.update();
+  };
+
+  Inspector.prototype.setSelectedElement = function(element) {
+    this.selectElement(element);
   };
 
   Inspector.prototype.destroy = function() {
@@ -180,28 +196,33 @@
     template = template.replace(/&gt;/g, '>');
 
     this.settings = {
-      steps: [
-        {
-          index: 1,
-          text: 'Select an item you wanna watch.'
-        },
-        {
-          index: 2,
-          text: 'Select the item name'
-        },
-        {
-          index: 3,
-          text: 'Select the price'
-        },
-        {
-          index: 4,
-          text: 'Congratulations! The item is being watched.'
-        }
-      ]
+      selectedCls: 'woohu-selected'
     };
 
+    this.steps = [
+      {
+        index: 1,
+        text: 'Select an item you wanna watch.',
+        selectedElement: null
+      },
+      {
+        index: 2,
+        text: 'Select the item name',
+        selectedElement: null
+      },
+      {
+        index: 3,
+        text: 'Select the price',
+        selectedElement: null
+      },
+      {
+        index: 4,
+        text: 'Congratulations! The item is being watched.'
+      }
+    ];
+
     this.model = {
-      step: this.settings.steps[0]
+      step: this.steps[0]
     };
 
     this.struct = {
@@ -224,7 +245,7 @@
          
         compiledTemplate = _.template(template)({
           step: model.step,
-          progress: (model.step.index / _this.settings.steps.length) * 100
+          progress: (model.step.index / _this.steps.length) * 100,
         });
 
         $el = $(view.template).html(compiledTemplate);
@@ -235,7 +256,8 @@
         if (model.step.index < 4) {
           _this.inspector = new Inspector({
             onSelectElement: _this.selectElement.bind(_this),
-            skip: $el[0]
+            skip: $el[0],
+            selectedCls: _this.settings.selectedCls
           });
         }
 
@@ -253,15 +275,30 @@
         'click .woohu-icon-back': function(e) {
           var currStep = _this.model.step.index;
 
-          _this.model.step = _this.settings.steps[currStep - 2];
+          _this.model.step = _this.steps[currStep - 2];
           _this.view.update();
 
-          _this.inspector.setSelectedElement(_this.selectedElement);          
+          _this.inspector.setSelectedElement(_this.model.step.selectedElement);          
+        },
+        'click .woohu-icon-next': function(e) {
+          var currStep = _this.model.step.index;
+
+          _this.model.step = _this.steps[currStep];
+          _this.view.update();
+
+          if (_this.model.step.selectedElement) {
+            _this.inspector.setSelectedElement(_this.model.step.selectedElement);       
+          }         
         }
       }
     };
 
     _delegateEvents(this.view.events, true, this);
+  };
+
+  Chooser.prototype._clean = function(selector) {
+    selector = selector.replace(/woohu-selected/g, '');
+    return selector.trim();
   };
 
   Chooser.prototype.selectElement = function(selectedElement) {
@@ -270,17 +307,17 @@
         currStep = model.step.index,
         selector = $(selectedElement).attr('class');
 
-    this.selectedElement = selectedElement;
+    model.step.selectedElement = selectedElement;
 
     if (currStep === 1) {
-      struct.selector = selector;
+      struct.selector = this._clean(selector);
     } else if (currStep === 2) {
-      struct.itemSchema.name.selector = selector;
+      struct.itemSchema.name.selector = this._clean(selector);
     } else if (currStep === 3) {
-      struct.itemSchema.price.selector = selector;
+      struct.itemSchema.price.selector = this._clean(selector);
     }
 
-    model.step = this.settings.steps[currStep];
+    model.step = this.steps[currStep];
     this.view.update();
   };
 

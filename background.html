@@ -8,11 +8,24 @@
         <progress class="woohu-progress" max="100" value="<%= progress %>"></progress>
         <div class="woohu-toolbar">
           <% if (step.index > 1) { %>
-            <div class="woohu-icon-back woohu-btn"> < </div>
+            <div class="woohu-icon-back woohu-btn woohu-btn-arrow"> 
+              <span>< </span>
+            </div>
           <% } %>
         </div>
+
         <div class="woohu-content">
           <%= step.text %>
+        </div>
+
+        <div class="woohu-toolbar">
+          <% if (step.index < 4) { %>
+            <% if (step.selectedElement) { %>
+              <div class="woohu-icon-next woohu-btn woohu-btn-arrow"> 
+                <span> > </span>
+              </div>
+            <% } %>
+          <% } %>
         </div>
       </section>
     </template>
