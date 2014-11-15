@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  var chooser;
+
   /* Listen for messages */
   chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     /* If the received message has the expected format... */
@@ -9,9 +11,13 @@
     //      the web-pages DOM content as argument 
     //   sendResponse(document.all[0].outerHTML);
     // }
-    var chooser = new window.Woohu.Chooser(msg.template);
+    chooser = chooser || new window.Woohu.Chooser(msg.template);
 
-    chooser.view.render();
+    if (chooser.$el) {
+      chooser.view.update();
+    } else { 
+      chooser.view.render();
+    }
     
     //var inspector = new window.Woohu.Inspector();
   });

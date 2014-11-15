@@ -5,9 +5,11 @@
   <body>
     <template id="woohu-chooser">      
       <section class="woohu-section">
-        <progress class="woohu-progress" max="100" value="33"></progress>
+        <progress class="woohu-progress" max="100" value="<%= progress %>"></progress>
         <div class="woohu-toolbar">
-          <div class="woohu-icon-back woohu-btn"> < </div>
+          <% if (step.index > 1) { %>
+            <div class="woohu-icon-back woohu-btn"> < </div>
+          <% } %>
         </div>
         <div class="woohu-content">
           <%= step.text %>
